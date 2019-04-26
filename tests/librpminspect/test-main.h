@@ -24,6 +24,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "rpminspect.h"
+
+string_list_t * make_list(char *, ...) __attribute__((sentinel));
+
 /* Each test module needs to export this function */
 bool add_test_suites(void);
 

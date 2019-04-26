@@ -13,7 +13,7 @@ check_PROGRAMS = test-badwords \
                  test-init \
                  test-inspect_elf
 
-CFLAGS += -I$(top_srcdir)/src/librpminspect
+CFLAGS += -I$(top_srcdir)/src/librpminspect -Wall -Werror
 LDADD = $(top_builddir)/src/librpminspect/librpminspect.la $(CUNIT_LIBS)
 
 test_badwords_SOURCES = test-badwords.c test-main.c

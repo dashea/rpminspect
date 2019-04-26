@@ -21,14 +21,50 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/queue.h>
 
 #include <CUnit/Basic.h>
 
+#include "rpminspect.h"
 #include "test-main.h"
 
 /* Special exit codes used by automake */
 #define EXIT_SKIP       (77)
 #define EXIT_HARD_ERROR (99)
+
+/* Make a string_list_t out each argument until it hits NULL */
+string_list_t * make_list(char *start, ...) {
+    va_list ap;
+    char *word;
+
+    string_list_t *list;
+    string_entry_t *entry;
+
+    list = malloc(sizeof(*list));
+    assert(list);
+
+    TAILQ_INIT(list);
+
+    if (start == NULL) {
+        return list;
+    }
+
+    va_start(ap, start);
+
+    for (word = start; word != NULL; word = va_arg(ap, char *)) {
+        entry = calloc(1, sizeof(*entry));
+        assert(entry);
+
+        entry->data = strdup(word);
+        assert(entry->data);
+
+        TAILQ_INSERT_TAIL(list, entry, items);
+    }
+
+    va_end(ap);
+
+    return list;
+}
 
 /* Wrappers around CU_assertImplementation to print better messages */
 CU_BOOL RI_assert_impl(CU_BOOL value, unsigned int line, const char *file, const char *format, ...)
