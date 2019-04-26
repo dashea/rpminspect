@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <stdbool.h>
 #include <CUnit/Basic.h>
 #include "rpminspect.h"
 
@@ -84,13 +85,13 @@ void test_strreplace(void) {
             "mreplacetch severreplacel substrings in severreplacel plreplaceces");
 }
 
-CU_pSuite get_suite(void) {
+bool add_test_suites(void) {
     CU_pSuite pSuite = NULL;
 
     /* add a suite to the registry */
     pSuite = CU_add_suite("strfuncs", init_test_strfuncs, clean_test_strfuncs);
     if (pSuite == NULL) {
-        return NULL;
+        return false;
     }
 
     /* add tests to the suite */
@@ -100,8 +101,8 @@ CU_pSuite get_suite(void) {
         CU_add_test(pSuite, "test strseverity()", test_strseverity) == NULL ||
         CU_add_test(pSuite, "test strwaiverauth()", test_strwaiverauth) == NULL ||
         CU_add_test(pSuite, "test strreplace()", test_strreplace) == NULL) {
-        return NULL;
+        return false;
     }
 
-    return pSuite;
+    return true;
 }

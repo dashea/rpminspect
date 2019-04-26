@@ -53,7 +53,6 @@ CU_BOOL RI_assert_impl(CU_BOOL value, unsigned int line, const char *file, const
  * run the test suite, cleanup, and exit with the appropriate error code */
 int main(void)
 {
-    CU_pSuite pSuite;
     unsigned int failures;
     unsigned int tests_run;
     unsigned int tests_skipped;
@@ -66,8 +65,7 @@ int main(void)
     /* Don't fail on inactive tests */
     CU_set_fail_on_inactive(CU_FALSE);
 
-    pSuite = get_suite();
-    if (pSuite == NULL) {
+    if (!add_test_suites()) {
         fprintf(stderr, "*** Unable to initialize test suite: %s\n", CU_get_error_msg());
         CU_cleanup_registry();
         return EXIT_HARD_ERROR;

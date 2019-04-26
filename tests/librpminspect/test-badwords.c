@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <CUnit/Basic.h>
@@ -92,19 +93,19 @@ void test_has_bad_word(void) {
     RI_ASSERT(has_bad_word("bebazzled", forbidden_words) == false);
 }
 
-CU_pSuite get_suite(void) {
+bool add_test_suites(void) {
     CU_pSuite pSuite = NULL;
 
     /* add a suite to the registry */
     pSuite = CU_add_suite("badwords", init_test_badwords, clean_test_badwords);
     if (pSuite == NULL) {
-        return NULL;
+        return false;
     }
 
     /* add tests to the suite */
     if (CU_add_test(pSuite, "test has_bad_word()", test_has_bad_word) == NULL) {
-        return NULL;
+        return false;
     }
 
-    return pSuite;
+    return true;
 }

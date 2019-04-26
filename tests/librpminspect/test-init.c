@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <stdbool.h>
 #include <CUnit/Basic.h>
 #include "rpminspect.h"
 #include "test-main.h"
@@ -38,19 +39,19 @@ void test_init_rpminspect(void) {
     return;
 }
 
-CU_pSuite get_suite(void) {
+bool add_test_suites(void) {
     CU_pSuite pSuite = NULL;
 
     /* add a suite to the registry */
     pSuite = CU_add_suite("init", init_test_init, clean_test_init);
     if (pSuite == NULL) {
-        return NULL;
+        return false;
     }
 
     /* add tests to the suite */
     if (CU_add_test(pSuite, "test init_rpminspect()", test_init_rpminspect) == NULL) {
-        return NULL;
+        return false;
     }
 
-    return pSuite;
+    return true;
 }

@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <elf.h>
@@ -171,13 +172,13 @@ void test_is_pic_ok(void) {
     return;
 }
 
-CU_pSuite get_suite(void) {
+bool add_test_suites(void) {
     CU_pSuite pSuite = NULL;
 
     /* add a suite to the registry */
     pSuite = CU_add_suite("inspect_elf", init_test_inspect_elf, clean_test_inspect_elf);
     if (pSuite == NULL) {
-        return NULL;
+        return false;
     }
 
     /* add tests to the suite */
@@ -194,8 +195,8 @@ CU_pSuite get_suite(void) {
         CU_add_test(pSuite, "test get_fortified_symbols()", test_get_fortified_symbols) == NULL ||
         CU_add_test(pSuite, "test get_fortifiable_symbols()", test_get_fortifiable_symbols) == NULL ||
         CU_add_test(pSuite, "test is_pic_ok()", test_is_pic_ok) == NULL) {
-        return NULL;
+        return false;
     }
 
-    return pSuite;
+    return true;
 }

@@ -20,11 +20,12 @@
 #define _LIBRPMINSPECT_TEST_MAIN_H
 
 #include <CUnit/Basic.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 
 /* Each test module needs to export this function */
-CU_pSuite get_suite(void);
+bool add_test_suites(void);
 
 /* Improved assertions: show what "actual" evaluates to, instead of just displaying the cpp token */
 CU_BOOL RI_assert_impl(CU_BOOL, unsigned int, const char *, const char *, ...)
