@@ -11,7 +11,8 @@ check_PROGRAMS = test-badwords \
                  test-tty \
                  test-strfuncs \
                  test-init \
-                 test-inspect_elf
+                 test-inspect_elf \
+		 test-files
 
 CFLAGS += -I$(top_srcdir)/src/librpminspect -Wall -Werror
 LDADD = $(top_builddir)/src/librpminspect/librpminspect.la $(CUNIT_LIBS)
@@ -22,6 +23,9 @@ test_tty_SOURCES = test-tty.c test-main.c
 test_strfuncs_SOURCES = test-strfuncs.c test-main.c
 test_init_SOURCES = test-init.c test-main.c
 test_inspect_elf_SOURCES = test-inspect_elf.c test-main.c
+
+test_files_SOURCES = test-files.c mock-rpm.c test-main.c
+test_files_LDFLAGS = -Wl,--wrap=headerGet
 
 # Used by the inspect_elf tests
 noinst_PROGRAMS = elftest-execstack elftest-noexecstack
@@ -34,7 +38,7 @@ elftest_noexecstack_SOURCES = elftest.c
 elftest_noexecstack_CFLAGS = -z noexecstack -z relro
 elftest_noexecstack_LDFLAGS = -no-install
 
-EXTRA_DIST = test-main.h
+EXTRA_DIST = test-main.h mock-rpm.h
 else
 
 check-local:
