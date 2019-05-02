@@ -269,32 +269,6 @@ cleanup:
     return file_list;
 }
 
-const char * get_file_path(const rpmfile_entry_t *file)
-{
-    rpmtd td;
-    const char *result = NULL;
-
-    td = rpmtdNew();
-    assert(td != NULL);
-
-    if (headerGet(file->rpm_header, RPMTAG_FILENAMES, td, HEADERGET_MINMEM | HEADERGET_EXT) != 1) {
-        fprintf(stderr, "*** Unable to read RPMTAG_FILENAMES for %s\n", file->fullpath);
-        goto cleanup;
-    }
-
-    if (rpmtdSetIndex(td, file->idx) == -1) {
-        fprintf(stderr, "*** Invalid file index for %s\n", file->fullpath);
-        goto cleanup;
-    }
-
-    result = rpmtdGetString(td);
-
-cleanup:
-    rpmtdFree(td);
-
-    return result;
-}
-
 bool process_file_path(const rpmfile_entry_t *file, regex_t *include_regex, regex_t *exclude_regex)
 {
     /* If include is set, the path must match the regex */
