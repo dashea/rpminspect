@@ -39,7 +39,7 @@ struct _wrappedHeader {
 };
 
 static void _mock_rpm_free_filenames(struct _wrappedHeader *h) {
-    int i;
+    unsigned int i;
 
     assert(h);
 
@@ -119,7 +119,7 @@ Header __wrap_headerLink(Header rpmHeader) {
     return rpmHeader;
 }
 
-int __wrap_headerGet(Header rpmHeader, rpmTagVal tag, rpmtd td, headerGetFlags flags) {
+int __wrap_headerGet(Header rpmHeader, rpmTagVal tag, rpmtd td, headerGetFlags flags __attribute__((unused))) {
     struct _wrappedHeader *h = (struct _wrappedHeader *) rpmHeader;
 
     rpmtdReset(td);

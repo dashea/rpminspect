@@ -16,7 +16,7 @@ check_PROGRAMS = $(TESTS) \
 		 elftest-execstack \
 		 elftest-noexecstack
 
-CFLAGS += -I$(top_srcdir)/src/librpminspect -Wall -Werror
+CFLAGS += -I$(top_srcdir)/src/librpminspect
 LDADD = $(top_builddir)/src/librpminspect/librpminspect.la $(CUNIT_LIBS)
 
 # Add this to LDFLAGS if using mock-rpm.c

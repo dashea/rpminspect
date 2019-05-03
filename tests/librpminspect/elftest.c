@@ -19,7 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(int argc, char **argv) {
+int main(void) {
     char *s = "Hello, world.";
     printf("%s\n", s);
     return EXIT_SUCCESS;
