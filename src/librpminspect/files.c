@@ -56,6 +56,29 @@ void free_files(rpmfile_t *files)
     free(files);
 }
 
+static char * _make_output_directory(const char *pkg) {
+    char *output_dir;
+
+    /*
+     * Name the directory the same as the package, but without the ".rpm"
+     * If the package doesn't end in .rpm, slap a ".d" on the end instead.
+     */
+
+    if (strsuffix(pkg, ".rpm")) {
+        xasprintf(&output_dir, "%.*s", (int) strlen(pkg) - 4, pkg);
+    } else {
+        xasprintf(&output_dir, "%s.d", pkg);
+    }
+
+    if (mkdir(output_dir, S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1) {
+        fprintf(stderr, "*** Unable to create directory %s: %s\n", output_dir, strerror(errno));
+        free(output_dir);
+        return NULL;
+    }
+
+    return output_dir;
+}
+
 /* Extract the RPM, with path "pkg" and extracted header "hdr", to output_dir.
  * Either output_dir or the directory immediately above it must exist.
  */
@@ -88,19 +111,9 @@ rpmfile_t * extract_rpm(const char *pkg, Header hdr)
     assert(pkg != NULL);
     assert(hdr != NULL);
 
-    /*
-     * Create an output directory for the rpm payload.
-     * Name the directory the same as the package, but without the ".rpm".
-     * If some joker hands us a file that doesn't end in .rpm, slap a ".d" on the end instead.
-     */
-    if (strsuffix(pkg, ".rpm")) {
-        xasprintf(&output_dir, "%.*s", (int) strlen(pkg) - 4, pkg);
-    } else {
-        xasprintf(&output_dir, "%s.d", pkg);
-    }
+    output_dir = _make_output_directory(pkg);
 
-    if (mkdir(output_dir, S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH) == -1) {
-        fprintf(stderr, "*** Unable to create directory %s: %s\n", output_dir, strerror(errno));
+    if (output_dir == NULL) {
         return NULL;
     }
 
